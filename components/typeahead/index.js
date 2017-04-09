@@ -9,7 +9,11 @@ const kc = {
 }
 
 function isIosDevice () {
-  return navigator.userAgent.match(/(iPod|iPhone|iPad)/g) && navigator.userAgent.match(/AppleWebKit/g)
+  // TODO: sniff useragent? (SSR)
+  if (typeof window === 'undefined') {
+    return false;
+  }
+  return window.navigator.userAgent.match(/(iPod|iPhone|iPad)/g) && window.navigator.userAgent.match(/AppleWebKit/g)
 }
 
 export default class Typeahead extends Component {
