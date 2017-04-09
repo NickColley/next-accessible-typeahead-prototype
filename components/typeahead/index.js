@@ -377,6 +377,7 @@ export default class Typeahead extends Component {
       const cnModOdd = (idx % 2) ? ` ${cn}--odd` : ''
       const cns = `${cn}${cnModFocused}${cnModOdd}`
       return <li
+        ref={(optionEl) => { this.elementRefs[idx] = optionEl }}
         aria-selected={focused === idx}
         className={cns}
         dangerouslySetInnerHTML={dangerouslySetInnerHTML}
@@ -401,7 +402,6 @@ export default class Typeahead extends Component {
               key={idx}
               dangerouslySetInnerHTML={{ __html: this.templateSuggestion(opt) }}
               idx={idx}
-              ref={(optionEl) => { this.elementRefs[idx] = optionEl }}
             />
           )}
           {showNoOptionsFound && <NoOptionsFound />}
