@@ -1,4 +1,4 @@
-import { h, Component } from 'preact' /** @jsx h */
+import { Component } from 'react'
 import debounce from 'lodash.debounce'
 
 export default class Status extends Component {

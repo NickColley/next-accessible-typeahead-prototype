@@ -1,4 +1,4 @@
-import { h, Component } from 'preact' /** @jsx h */
+import { Component } from 'react'
 import Status from './status'
 
 const kc = {

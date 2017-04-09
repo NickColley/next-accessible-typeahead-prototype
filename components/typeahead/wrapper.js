@@ -1,4 +1,4 @@
-import { h, render } from 'preact' /** @jsx h */
+import { Component } from 'react'
 import Typeahead from './typeahead'
 
 function AccessibleTypeahead ({
