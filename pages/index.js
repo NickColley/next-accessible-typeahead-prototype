@@ -19,6 +19,13 @@ export default () => (
   <div>
     <Head>
       <link rel="stylesheet" href="https://unpkg.com/accessible-typeahead@0.3.5/examples/styled.css" />
+      <style>{`
+        html {
+          font-family: sans-serif;
+          font-size: 16px;
+          line-height: 1.5;
+        }
+      `}</style>
     </Head>
     Welcome to next.js!
     <br/>
