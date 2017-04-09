@@ -316,14 +316,6 @@ export default class Typeahead extends Component {
     const showNoOptionsFound = this.props.showNoOptionsFound &&
       inputFocused && noOptionsAvailable && queryNotEmpty && queryLongEnough
 
-    const Wrapper = ({ children }) =>
-      <div
-        className={`${cssNamespace}__wrapper`}
-        onKeyDown={this.handleKeyDown}
-      >
-        { children }
-      </div>
-
     const Hint = () => {
       const selectedOption = this.templateInputValue(options[selected])
       const optionBeginsWithQuery = selectedOption && selectedOption.toLowerCase().indexOf(query.toLowerCase()) === 0
@@ -338,23 +330,25 @@ export default class Typeahead extends Component {
       />
     }
 
-    const Input = () =>
+    const Input = (
       <input
+        ref={(inputEl) => { this.elementRefs[-1] = inputEl }}
         aria-activedescendant={focused !== -1 && focused !== null ? `${id}__option--${focused}` : false}
         aria-expanded={menuOpen}
         aria-owns={`${id}__listbox`}
-        autocomplete='off'
+        autoComplete='off'
         className={`${cssNamespace}__input`}
         id={id}
         name={name}
         onBlur={this.handleInputBlur}
         onFocus={this.handleInputFocus}
-        onInput={this.handleInputChange}
+        onChange={this.handleInputChange}
         placeholder={this.props.placeholder}
         role='combobox'
         type='text'
         value={query}
       />
+    )
 
     const Menu = ({ children }) => {
       const cn = `${cssNamespace}__menu`
@@ -398,14 +392,13 @@ export default class Typeahead extends Component {
     }
 
     return (
-      <Wrapper>
+      <Wrapper cssNamespace={cssNamespace} onKeyDown={this.handleKeyDown}>
         <Hint />
-        <Input
-          ref={(inputEl) => { this.elementRefs[-1] = inputEl }}
-        />
+        {Input}
         <Menu>
           {options.map((opt, idx) =>
             <Option
+              key={idx}
               dangerouslySetInnerHTML={{ __html: this.templateSuggestion(opt) }}
               idx={idx}
               ref={(optionEl) => { this.elementRefs[idx] = optionEl }}
@@ -423,3 +416,11 @@ export default class Typeahead extends Component {
     )
   }
 }
+
+const Wrapper = ({ cssNamespace, onKeyDown, children }) =>
+  <div
+    className={`${cssNamespace}__wrapper`}
+    onKeyDown={onKeyDown}
+  >
+    { children }
+  </div>
