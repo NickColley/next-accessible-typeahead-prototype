@@ -332,8 +332,8 @@ export default class Typeahead extends Component {
         : ''
       return <input
         className={`${cssNamespace}__hint`}
-        readonly
-        tabindex='-1'
+        readOnly
+        tabIndex='-1'
         value={hintValue}
       />
     }
@@ -393,7 +393,7 @@ export default class Typeahead extends Component {
         onMouseMove={() => this.handleOptionMouseMove(idx)}
         onMouseOut={(evt) => this.handleOptionMouseOut(evt, idx)}
         role='option'
-        tabindex='-1'
+        tabIndex='-1'
       />
     }
 
