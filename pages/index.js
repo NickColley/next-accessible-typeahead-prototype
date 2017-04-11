@@ -26,11 +26,12 @@ function source (query, syncResults) {
 export default class extends React.Component {
   static async getInitialProps ({ req }) {
     return {
-      isServerRendered: !!req
+      isServerRender: !!req
     }
   }
   render () {
-    var isClient = typeof global.process === 'undefined'
+    var hasJavaScriptEnabled = global.hasJavaScriptEnabled
+    var { isServerRender } = this.props
     return <div>
         <Head>
           <link rel="stylesheet" href="https://unpkg.com/accessible-typeahead@0.3.5/examples/styled.css" />
@@ -40,25 +41,41 @@ export default class extends React.Component {
               font-size: 16px;
               line-height: 1.5;
             }
+            html.js .hidden-if-js,
+            html:not(.js) .hidden-if-no-js {
+              display: none !important;
+            }
           `}</style>
+          <script dangerouslySetInnerHTML={{ __html: `
+            var hasJavaScriptEnabled = typeof window.process === 'undefined'
+            if (hasJavaScriptEnabled) {
+              document.documentElement.className += ' js'
+            }
+          `}}></script>
         </Head>
-        <h1>{this.props.isServerRendered ? 'Server' : 'Client'}</h1>
+        <h1>{isServerRender ? 'Server' : 'Client'}</h1>
         Welcome to next.js!
         <br/>
-        {isClient ? (
+        <div className="hidden-if-no-js">
           <Typeahead source={source} placeholder={PLACEHOLDER} />
-        ) : (
-          <select className='typeahead__input' style={{
+        </div>
+        {`
+          We are falling back to a select here but for other uses cases
+          like where the typeahead will submit to another page you'd want to fallback to a
+          normal input, be good to flesh those patterns out.
+        `}
+        {isServerRender &&
+          <select defaultValue='-1' className='typeahead__input hidden-if-js' style={{
             display: 'block'
           }}>
-            <option value='-1' disabled selected hidden>{PLACEHOLDER}</option>
+            <option disabled>{PLACEHOLDER}</option>
             {
-              OPTIONS.map(optionItem => {
-                return <option value={optionItem}>{optionItem}</option>
+              OPTIONS.map((optionItem, index) => {
+                return <option key={index} value={optionItem}>{optionItem}</option>
               })
             }
           </select>
-        )}
+        }
         <br/>
         <Link href="/otherPage"><a>Other Page</a></Link>
     </div>
